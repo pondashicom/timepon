@@ -2415,14 +2415,12 @@ function multiRenderRows(){
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${i+1}</td>
-        tr.innerHTML = `
-                    <td>${i+1}</td>
-                    <td><input class="mId" id="mId_${i}" inputmode="numeric" pattern="\\d*" value="${h(r.id)}" placeholder="000000" style="width:9ch"></td>
-                    <td><input class="mName" id="mName_${i}" value="${h(r.name)}" placeholder="${h(t('multiRoomName'))}" style="width:24ch"></td>
-                    <td id="mTimer_${i}">-</td>
-                    <td id="mPrompt_${i}" class="mPrompt">-</td>
-                    <td id="mOn_${i}">-</td>
-                `;
+            <td><input class="mId" id="mId_${i}" inputmode="numeric" pattern="\\d*" value="${h(r.id)}" placeholder="000000" style="width:9ch"></td>
+            <td><input class="mName" id="mName_${i}" value="${h(r.name)}" placeholder="${h(t('multiRoomName'))}" style="width:24ch"></td>
+            <td id="mTimer_${i}">-</td>
+            <td id="mPrompt_${i}" class="mPrompt">-</td>
+            <td id="mOn_${i}">-</td>
+        `;
         tb.appendChild(tr);
     });
 }
