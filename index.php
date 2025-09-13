@@ -2373,9 +2373,9 @@ function mPromptStatus(st, online){
     if (msg) {
         return { text: msg, cls: '' };
     }
-    if (!online) return { text: t('multiPromptOffline'), cls: 'badge b-off' };
-    return { text: t('multiPromptNone'), cls: '' };
+    return { text: '', cls: '' };
 }
+
 function mFmtRemainRich(sec){
     sec = Math.max(-359999, Math.min(359999, Number(sec)||0));
     const neg = sec < 0;
