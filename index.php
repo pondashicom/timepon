@@ -1151,6 +1151,10 @@ select:focus{
   vertical-align:middle;
   white-space:nowrap;
 }
+.multiTable td.mPrompt{
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .multiTable th + th,
 .multiTable td + td{
   border-left:1px solid rgba(148,163,184,.12);
@@ -2366,12 +2370,11 @@ function remainGeneric(st){
 }
 function mPromptStatus(st, online){
     const msg = (st?.message||'').trim();
-    const msgAt = Number(st?.messageAtMs||0);
-    const ack   = Number(st?.stage?.msgAckMs||0);
-    if (!msg) return { text: t('multiPromptNone'), cls: '' };           // ← バッジを外す
+    if (msg) {
+        return { text: msg, cls: '' };
+    }
     if (!online) return { text: t('multiPromptOffline'), cls: 'badge b-off' };
-    if (ack >= msgAt) return { text: t('multiPromptShown'), cls: 'badge b-on' };
-    return { text: t('multiPromptPending'), cls: 'badge b-pend' };
+    return { text: t('multiPromptNone'), cls: '' };
 }
 function mFmtRemainRich(sec){
     sec = Math.max(-359999, Math.min(359999, Number(sec)||0));
@@ -2412,12 +2415,14 @@ function multiRenderRows(){
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${i+1}</td>
-            <td><input class="mId" id="mId_${i}" inputmode="numeric" pattern="\\d*" value="${h(r.id)}" placeholder="000000" style="width:9ch"></td>
-            <td><input class="mName" id="mName_${i}" value="${h(r.name)}" placeholder="${h(t('multiRoomName'))}" style="width:24ch"></td>
-            <td id="mTimer_${i}">-</td>
-            <td id="mPrompt_${i}">-</td>
-            <td id="mOn_${i}">-</td>
-        `;
+        tr.innerHTML = `
+                    <td>${i+1}</td>
+                    <td><input class="mId" id="mId_${i}" inputmode="numeric" pattern="\\d*" value="${h(r.id)}" placeholder="000000" style="width:9ch"></td>
+                    <td><input class="mName" id="mName_${i}" value="${h(r.name)}" placeholder="${h(t('multiRoomName'))}" style="width:24ch"></td>
+                    <td id="mTimer_${i}">-</td>
+                    <td id="mPrompt_${i}" class="mPrompt">-</td>
+                    <td id="mOn_${i}">-</td>
+                `;
         tb.appendChild(tr);
     });
 }
