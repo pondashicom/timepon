@@ -2,7 +2,14 @@
 // SPDX-License-Identifier: MIT
 /* =========================================================
  * カンファレンスタイマー 「TIME-PON」
+ * バージョン 1.0.1
  * 
+  * 【概要】
+ * 1) カンファレンスやプレゼンテーションなどの場で、遠隔操作で講演者に残り時間を表示したり、カンペを出すための Web アプリケーションです。  
+ * 2) タイマーを演台において、制御側はオペレータが操作するという、ビューとコントロールが完全に分離されたタイマーシステムです。
+ * 3) スピーカービューはカウントダウンタイマーと、オペレーターからの「カンペ」を見ることができます。
+ * 4) オペレータは、全体の時間や警告時間などを設定し、適時スピーカーに「カンペ」を送ることができます。
+ *
  * 【設置】
  * 1) 本ファイルをWebサーバーの公開ディレクトリに配置してください（例: /public_html/timepon.php）。
  * 2) 同階層に data/ が無い場合は自動作成されます。手動作成時は 0775 以上の書込権限を付与。
@@ -15,7 +22,7 @@
  * - 新規ルーム作成で6桁IDが発行されます。
  *   管理URL: ?op=1&id=XXXXXX / 演台URL: ?id=XXXXXX を配布してください。
  * - 時計設定（持ち時間・第1/第2警告）はルームIDと独立に保存・更新されます（同じIDのまま）。
- * - 警告色の遷移：青 → 緑（第1） → オレンジ（第2） → 赤（0秒以降はやわらか点滅）。
+ * - 警告色の遷移：グレー → 黄色（第1） → 朱色（第2） → 赤（0秒以降はやわらか点滅）。
  *
  * 【ショートカットキー】
  *  - SHIFT+SPACE : スタート/一時停止のトグル
@@ -1303,19 +1310,19 @@ select:focus{
               <span data-i18n="labelDuration">持ち時間</span>
               <input id="adur" type="number" min="1" value="40">
               <span data-i18n="labelMin">分</span>
-              <input id="cN" type="color" class="cp" value="#0ea5e9" title="通常色（背景：青）">
+              <input id="cN" type="color" class="cp" value="#1e293b" title="通常色（背景）">
             </label>
             <label>
               <span data-i18n="labelWarn1">第1警告</span>
               <input id="aw1" type="number" min="0" value="10">
               <span data-i18n="labelBefore">分前</span>
-              <input id="c1" type="color" class="cp" value="#22c55e" title="第1警告色（緑）">
+              <input id="c1" type="color" class="cp" value="#facc15" title="第1警告色（黄）">
             </label>
             <label>
               <span data-i18n="labelWarn2">第2警告</span>
               <input id="aw2" type="number" min="0" value="5">
               <span data-i18n="labelBefore">分前</span>
-              <input id="c2" type="color" class="cp" value="#ff8c00" title="第2警告色（オレンジ）">
+              <input id="c2" type="color" class="cp" value="#ef4444" title="第2警告色（朱）">
             </label>
             <button id="saveSettings" class="secondary pushR" data-i18n="saveSettings">設定保存</button>
           </div>
@@ -1685,6 +1692,7 @@ el('toAdmin').onclick = ()=>{
   el('admin').classList.remove('hidden');
   el('multi').classList.add('hidden');
   showLangSwitch(true);
+  try { wireColorPickers(); } catch(_e){}
 };
 el('toStage').onclick = ()=>{
   el('home').classList.add('hidden');
